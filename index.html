@@ -1,0 +1,1564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AutomationEdu - Web Automation Educational Platform</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-green: #10b981;
+            --secondary-green: #059669;
+            --dark-bg: #0f172a;
+            --darker-bg: #020617;
+            --card-bg: #1e293b;
+            --card-hover: #334155;
+            --text-primary: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --text-dim: #64748b;
+            --border-color: #334155;
+            --purple-accent: #8b5cf6;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, var(--darker-bg) 0%, var(--dark-bg) 100%);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Animated Background */
+        .bg-animation {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: -1;
+            opacity: 0.03;
+            background-image:
+                repeating-linear-gradient(45deg, transparent, transparent 35px, rgba(16, 185, 129, 0.1) 35px, rgba(16, 185, 129, 0.1) 70px);
+            animation: backgroundMove 20s linear infinite;
+        }
+
+        @keyframes backgroundMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(70px, 70px); }
+        }
+
+        /* Navigation */
+        nav {
+            padding: 1.5rem 2rem;
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1.25rem;
+            font-weight: 700;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--primary-green);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        /* Robot icon using CSS */
+        .logo-icon::before {
+            content: '';
+            width: 20px;
+            height: 20px;
+            background: white;
+            border-radius: 4px;
+            position: absolute;
+        }
+
+        .logo-icon::after {
+            content: '';
+            width: 12px;
+            height: 4px;
+            background: var(--primary-green);
+            position: absolute;
+            top: 14px;
+            box-shadow: 0 8px 0 var(--primary-green);
+        }
+
+        .logo-text {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.2;
+        }
+
+        .logo-subtitle {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            font-weight: 400;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.3s;
+            font-weight: 500;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-green);
+        }
+
+        .source-code-btn {
+            background: var(--card-bg);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            transition: all 0.3s;
+        }
+
+        .source-code-btn:hover {
+            background: var(--card-hover);
+            border-color: var(--primary-green);
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 4rem 2rem;
+            text-align: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            line-height: 1.1;
+        }
+
+        .hero h1 .highlight {
+            color: var(--primary-green);
+        }
+
+        .hero-subtitle {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            max-width: 700px;
+            margin: 0 auto 3rem;
+            line-height: 1.6;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            margin-bottom: 5rem;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+            color: white;
+        }
+
+        .btn-primary {
+            background: var(--primary-green);
+            box-shadow: 0 10px 25px rgba(16, 185, 129, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 35px rgba(16, 185, 129, 0.4);
+        }
+
+        .btn-secondary {
+            background: var(--purple-accent);
+            box-shadow: 0 10px 25px rgba(139, 92, 246, 0.3);
+        }
+
+        .btn-secondary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 35px rgba(139, 92, 246, 0.4);
+        }
+
+        /* Feature Cards */
+        .features {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+            gap: 2rem;
+            margin-bottom: 5rem;
+        }
+
+        .feature-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 2rem;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--primary-green), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.6s;
+        }
+
+        .feature-card:hover::before {
+            transform: translateX(100%);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary-green);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .feature-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            background: rgba(16, 185, 129, 0.1);
+            border: 2px solid var(--primary-green);
+        }
+
+        .feature-label {
+            font-size: 0.875rem;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .feature-title {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .feature-description {
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        /* Info Cards */
+        .info-section {
+            max-width: 1200px;
+            margin: 5rem auto;
+            padding: 0 2rem;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .info-card {
+            background: rgba(30, 41, 59, 0.5);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .info-card:hover {
+            background: var(--card-bg);
+            transform: scale(1.02);
+        }
+
+        .info-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: var(--primary-green);
+        }
+
+        .info-title {
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .info-text {
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        /* Demo Section */
+        .demo-section {
+            max-width: 1200px;
+            margin: 5rem auto;
+            padding: 2rem;
+            background: var(--card-bg);
+            border-radius: 20px;
+            border: 1px solid var(--border-color);
+        }
+
+        .demo-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .demo-title {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .demo-controls {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .control-btn {
+            padding: 0.75rem 1.5rem;
+            background: var(--dark-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+
+        .control-btn:hover {
+            background: var(--primary-green);
+            border-color: var(--primary-green);
+            transform: translateY(-2px);
+        }
+
+        .control-btn.active {
+            background: var(--primary-green);
+            border-color: var(--primary-green);
+        }
+
+        .demo-area {
+            background: var(--darker-bg);
+            border-radius: 12px;
+            padding: 2rem;
+            min-height: 400px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .browser-mockup {
+            background: var(--card-bg);
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .browser-header {
+            background: var(--dark-bg);
+            padding: 0.75rem;
+            border-radius: 8px 8px 0 0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .browser-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--border-color);
+        }
+
+        .browser-dot.red { background: #ef4444; }
+        .browser-dot.yellow { background: #eab308; }
+        .browser-dot.green { background: #22c55e; }
+
+        .browser-content {
+            padding: 2rem;
+            min-height: 300px;
+            position: relative;
+        }
+
+        /* Ethics Section */
+        .ethics-section {
+            max-width: 1200px;
+            margin: 5rem auto;
+            padding: 2rem;
+            background: rgba(139, 92, 246, 0.1);
+            border-radius: 20px;
+            border: 1px solid rgba(139, 92, 246, 0.3);
+        }
+
+        .ethics-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .ethics-title {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--purple-accent);
+        }
+
+        .ethics-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .ethics-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 2rem;
+        }
+
+        .ethics-card h3 {
+            color: var(--purple-accent);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* Mouse Cursor Animation */
+        .mouse-cursor {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: var(--primary-green);
+            border-radius: 50%;
+            box-shadow: 0 0 20px rgba(16, 185, 129, 0.5);
+            pointer-events: none;
+            z-index: 1000;
+            transition: none;
+        }
+
+        .mouse-trail {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: rgba(16, 185, 129, 0.3);
+            border-radius: 50%;
+            pointer-events: none;
+            animation: fadeOut 1s forwards;
+        }
+
+        @keyframes fadeOut {
+            to {
+                opacity: 0;
+                transform: scale(0);
+            }
+        }
+
+        /* Demo Elements */
+        .demo-button {
+            padding: 0.75rem 1.5rem;
+            background: var(--primary-green);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            margin: 0.5rem;
+            transition: all 0.3s;
+        }
+
+        .demo-button:hover {
+            background: var(--secondary-green);
+            transform: scale(1.05);
+        }
+
+        .demo-input {
+            padding: 0.75rem;
+            background: var(--dark-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-primary);
+            margin: 0.5rem;
+            width: 250px;
+        }
+
+        .typing-animation {
+            animation: typing 0.1s;
+        }
+
+        @keyframes typing {
+            0% { transform: scale(0.95); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        /* Console Output */
+        .console-output {
+            background: var(--darker-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-top: 2rem;
+            font-family: 'Courier New', monospace;
+            font-size: 0.875rem;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .console-line {
+            margin: 0.25rem 0;
+            opacity: 0;
+            animation: fadeIn 0.5s forwards;
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
+        .console-line.info { color: var(--primary-green); }
+        .console-line.warning { color: #eab308; }
+        .console-line.debug { color: var(--text-dim); }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 3rem 2rem;
+            border-top: 1px solid var(--border-color);
+            margin-top: 5rem;
+        }
+
+        .footer-text {
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+        }
+
+        .footer-links a {
+            color: var(--text-dim);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: var(--primary-green);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .feature-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+
+        /* Icon styles */
+        .icon-brain, .icon-clock, .icon-mouse, .icon-eye, .icon-shield, .icon-gear,
+        .icon-lock, .icon-robot, .icon-search {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        /* Brain icon */
+        .icon-brain::before {
+            content: '';
+            width: 30px;
+            height: 30px;
+            border: 3px solid var(--primary-green);
+            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+            position: relative;
+        }
+
+        /* Clock icon */
+        .icon-clock::before {
+            content: '';
+            width: 30px;
+            height: 30px;
+            border: 3px solid var(--primary-green);
+            border-radius: 50%;
+        }
+
+        .icon-clock::after {
+            content: '';
+            width: 2px;
+            height: 10px;
+            background: var(--primary-green);
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -100%);
+            transform-origin: bottom;
+        }
+
+        /* Mouse icon */
+        .icon-mouse::before {
+            content: '';
+            width: 20px;
+            height: 30px;
+            border: 3px solid var(--primary-green);
+            border-radius: 10px;
+        }
+
+        .icon-mouse::after {
+            content: '';
+            width: 2px;
+            height: 8px;
+            background: var(--primary-green);
+            position: absolute;
+            top: 18px;
+        }
+
+        /* Eye icon */
+        .icon-eye::before {
+            content: '';
+            width: 35px;
+            height: 20px;
+            border: 3px solid var(--primary-green);
+            border-radius: 50%;
+        }
+
+        .icon-eye::after {
+            content: '';
+            width: 10px;
+            height: 10px;
+            background: var(--primary-green);
+            border-radius: 50%;
+            position: absolute;
+        }
+
+        /* Shield icon */
+        .icon-shield::before {
+            content: '';
+            width: 25px;
+            height: 30px;
+            border: 3px solid var(--primary-green);
+            border-radius: 0 0 50% 50%;
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+        }
+
+        /* Gear icon */
+        .icon-gear::before {
+            content: '';
+            width: 25px;
+            height: 25px;
+            border: 4px solid var(--primary-green);
+            border-radius: 50%;
+            position: relative;
+        }
+
+        .icon-gear::after {
+            content: '';
+            width: 35px;
+            height: 35px;
+            position: absolute;
+            background:
+                linear-gradient(var(--primary-green), var(--primary-green)) center/5px 100%,
+                linear-gradient(var(--primary-green), var(--primary-green)) center/100% 5px;
+            background-repeat: no-repeat;
+        }
+
+        /* Loading Animation */
+        .loading-dots {
+            display: inline-flex;
+            gap: 0.25rem;
+        }
+
+        .loading-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--primary-green);
+            border-radius: 50%;
+            animation: bounce 1.4s infinite ease-in-out both;
+        }
+
+        .loading-dot:nth-child(1) { animation-delay: -0.32s; }
+        .loading-dot:nth-child(2) { animation-delay: -0.16s; }
+
+        @keyframes bounce {
+            0%, 80%, 100% {
+                transform: scale(0);
+            }
+            40% {
+                transform: scale(1);
+            }
+        }
+
+        @keyframes rainbow {
+            0% { filter: hue-rotate(0deg); }
+            100% { filter: hue-rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-animation"></div>
+
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <div class="logo">
+                <div class="logo-icon"></div>
+                <div class="logo-text">
+                    AutomationEdu
+                    <span class="logo-subtitle">Educational Platform</span>
+                </div>
+            </div>
+            <div class="nav-links">
+                <a href="#features">Features</a>
+                <a href="#demo">Code Examples</a>
+                <a href="#ethics">Ethics</a>
+                <a href="#" class="source-code-btn">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="vertical-align: middle; margin-right: 4px;">
+                        <path d="M12 2L2 7v10c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-10-5z"/>
+                    </svg>
+                    Source Code
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <h1>Web Automation<br><span class="highlight">Demonstration</span></h1>
+        <p class="hero-subtitle">
+            Learn browser automation techniques through interactive demonstrations.
+            Understand detection methods, human-like behaviors, and ethical considerations.
+        </p>
+        <div class="cta-buttons">
+            <button class="btn btn-primary" onclick="scrollToDemo()">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M7 2v11h3v9l7-12h-4l4-8z"/>
+                </svg>
+                Explore Code
+            </button>
+            <button class="btn btn-secondary" onclick="startDemo()">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <circle cx="12" cy="12" r="3"/>
+                    <path d="M12 1v6m0 6v6m11-7h-6m-6 0H1"/>
+                </svg>
+                Try Demo
+            </button>
+        </div>
+
+        <p style="color: var(--text-dim); margin-bottom: 2rem;">
+            Discover cutting-edge techniques and methodologies that power today's web automation landscape.
+        </p>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <div class="feature-grid">
+            <div class="feature-card">
+                <div class="feature-header">
+                    <div class="feature-icon"><div class="icon-brain"></div></div>
+                    <span class="feature-label">AI-Powered</span>
+                </div>
+                <h3 class="feature-title">Intelligent Behavior Simulation</h3>
+                <p class="feature-description">
+                    Advanced algorithms simulate realistic human browsing patterns, mouse movements, and interaction timing.
+                </p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-header">
+                    <div class="feature-icon"><div class="icon-clock"></div></div>
+                    <span class="feature-label">Smart Timing</span>
+                </div>
+                <h3 class="feature-title">Dynamic Timing Control</h3>
+                <p class="feature-description">
+                    Random delays and realistic wait times between actions to avoid detection patterns.
+                </p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-header">
+                    <div class="feature-icon"><div class="icon-mouse"></div></div>
+                    <span class="feature-label">Realistic</span>
+                </div>
+                <h3 class="feature-title">Natural Mouse Movement</h3>
+                <p class="feature-description">
+                    Curved mouse paths with acceleration and deceleration patterns mimicking human behavior.
+                </p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-header">
+                    <div class="feature-icon"><div class="icon-eye"></div></div>
+                    <span class="feature-label">Educational</span>
+                </div>
+                <h3 class="feature-title">Detection Analysis</h3>
+                <p class="feature-description">
+                    Comprehensive examination of bot detection methods and fingerprinting techniques.
+                </p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-header">
+                    <div class="feature-icon"><div class="icon-shield"></div></div>
+                    <span class="feature-label">Responsible</span>
+                </div>
+                <h3 class="feature-title">Ethical Framework</h3>
+                <p class="feature-description">
+                    Built-in safeguards and educational warnings about responsible automation usage.
+                </p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-header">
+                    <div class="feature-icon"><div class="icon-gear"></div></div>
+                    <span class="feature-label">Professional</span>
+                </div>
+                <h3 class="feature-title">Modern Architecture</h3>
+                <p class="feature-description">
+                    Clean, maintainable codebase with proper error handling and logging systems.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Info Section -->
+    <section class="info-section">
+        <div class="info-grid">
+            <div class="info-card">
+                <div class="info-icon">
+                    <svg width="48" height="48" viewBox="0 0 24 24" fill="var(--primary-green)">
+                        <path d="M12 2L2 7v10c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-10-5z"/>
+                    </svg>
+                </div>
+                <h3 class="info-title">Ethical Focus</h3>
+                <p class="info-text">
+                    Learn responsible automation practices and legal considerations
+                </p>
+            </div>
+
+            <div class="info-card">
+                <div class="info-icon">
+                    <svg width="48" height="48" viewBox="0 0 24 24" fill="var(--primary-green)">
+                        <rect x="3" y="11" width="18" height="10" rx="2" ry="2"/>
+                        <rect x="7" y="4" width="10" height="10" rx="2" ry="2"/>
+                        <circle cx="8" cy="16" r="1"/>
+                        <circle cx="16" cy="16" r="1"/>
+                    </svg>
+                </div>
+                <h3 class="info-title">Human-like Behavior</h3>
+                <p class="info-text">
+                    Understand how bots simulate human interactions and why it matters
+                </p>
+            </div>
+
+            <div class="info-card">
+                <div class="info-icon">
+                    <svg width="48" height="48" viewBox="0 0 24 24" fill="var(--primary-green)">
+                        <circle cx="11" cy="11" r="8" fill="none" stroke="var(--primary-green)" stroke-width="2"/>
+                        <path d="M21 21l-4.35-4.35" stroke="var(--primary-green)" stroke-width="2"/>
+                    </svg>
+                </div>
+                <h3 class="info-title">Detection Methods</h3>
+                <p class="info-text">
+                    Explore how websites identify and prevent automated access
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Demo Section -->
+    <section class="demo-section" id="demo">
+        <div class="demo-header">
+            <h2 class="demo-title">Live Automation Demo</h2>
+            <p style="color: var(--text-secondary);">Watch how sophisticated automation works in real-time</p>
+        </div>
+
+        <div class="demo-controls">
+            <button class="control-btn" onclick="startMouseDemo()">Mouse Movement</button>
+            <button class="control-btn" onclick="startTypingDemo()">Human Typing</button>
+            <button class="control-btn" onclick="startScrollDemo()">Smart Scrolling</button>
+            <button class="control-btn" onclick="startFullDemo()">Full Demo</button>
+        </div>
+
+        <div class="demo-area">
+            <div class="browser-mockup">
+                <div class="browser-header">
+                    <div class="browser-dot red"></div>
+                    <div class="browser-dot yellow"></div>
+                    <div class="browser-dot green"></div>
+                    <div style="flex: 1; text-align: center; color: var(--text-dim);">
+                        https://demo-site.example.com
+                    </div>
+                </div>
+                <div class="browser-content" id="browserContent">
+                    <h3 style="margin-bottom: 1rem;">Interactive Demo Page</h3>
+                    <p style="color: var(--text-secondary); margin-bottom: 2rem;">
+                        Click the controls above to see different automation behaviors
+                    </p>
+
+                    <div id="demoElements">
+                        <button class="demo-button" id="btn1">Click Me</button>
+                        <button class="demo-button" id="btn2">Submit</button>
+                        <button class="demo-button" id="btn3">Learn More</button>
+                        <br>
+                        <input type="text" class="demo-input" id="input1" placeholder="Enter your name...">
+                        <input type="email" class="demo-input" id="input2" placeholder="Enter email...">
+                    </div>
+
+                    <div id="mouseCursor" class="mouse-cursor" style="display: none;"></div>
+                </div>
+            </div>
+
+            <div class="console-output" id="consoleOutput">
+                <div class="console-line info">[>] Automation framework initialized</div>
+                <div class="console-line debug">Behavior pattern: INTELLIGENT</div>
+                <div class="console-line debug">Anti-detection: ENABLED</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Ethics Section -->
+    <section class="ethics-section" id="ethics">
+        <div class="ethics-header">
+            <h2 class="ethics-title">Ethical Guidelines</h2>
+            <p style="color: var(--text-secondary);">Understanding responsible automation practices</p>
+        </div>
+
+        <div class="ethics-content">
+            <div class="ethics-card">
+                <h3>
+                    ⚖️ Legal Compliance
+                </h3>
+                <p style="color: var(--text-secondary); line-height: 1.6;">
+                    Always respect robots.txt, terms of service, and applicable laws. Automation should never violate website policies or engage in unauthorized access.
+                </p>
+            </div>
+
+            <div class="ethics-card">
+                <h3>
+                    🌐 Rate Limiting
+                </h3>
+                <p style="color: var(--text-secondary); line-height: 1.6;">
+                    Implement respectful delays between requests to avoid overwhelming servers. Consider the impact on website performance and other users.
+                </p>
+            </div>
+
+            <div class="ethics-card">
+                <h3>
+                    🎯 Purpose-Driven
+                </h3>
+                <p style="color: var(--text-secondary); line-height: 1.6;">
+                    Use automation for legitimate purposes like testing, research, or accessibility improvements. Avoid malicious activities like spam or fraud.
+                </p>
+            </div>
+
+            <div class="ethics-card">
+                <h3>
+                    📊 Data Privacy
+                </h3>
+                <p style="color: var(--text-secondary); line-height: 1.6;">
+                    Respect user privacy and data protection regulations. Only collect necessary data and handle it according to privacy laws.
+                </p>
+            </div>
+
+            <div class="ethics-card">
+                <h3>
+                    🤝 Transparency
+                </h3>
+                <p style="color: var(--text-secondary); line-height: 1.6;">
+                    Be transparent about automated activities when appropriate. Many platforms have APIs that provide official access methods.
+                </p>
+            </div>
+
+            <div class="ethics-card">
+                <h3>
+                    🛡️ Security
+                </h3>
+                <p style="color: var(--text-secondary); line-height: 1.6;">
+                    Implement proper security measures and avoid circumventing legitimate security controls designed to protect users and systems.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p class="footer-text">
+            © 2024 AutomationEdu - Educational Platform for Web Automation
+        </p>
+        <div class="footer-links">
+            <a href="#">Documentation</a>
+            <a href="#">GitHub</a>
+            <a href="#">Legal</a>
+            <a href="#">Contact</a>
+        </div>
+    </footer>
+
+    <script>
+        // Console logging
+        function addConsoleLog(message, type = 'info') {
+            const console = document.getElementById('consoleOutput');
+            const line = document.createElement('div');
+            line.className = `console-line ${type}`;
+            const timestamp = new Date().toLocaleTimeString();
+            line.textContent = `[${timestamp}] ${message}`;
+            console.appendChild(line);
+            console.scrollTop = console.scrollHeight;
+        }
+
+        // Bezier curve for mouse movement
+        function bezierCurve(t, p0, p1, p2, p3) {
+            const u = 1 - t;
+            const tt = t * t;
+            const uu = u * u;
+            const uuu = uu * u;
+            const ttt = tt * t;
+
+            let p = {
+                x: uuu * p0.x + 3 * uu * t * p1.x + 3 * u * tt * p2.x + ttt * p3.x,
+                y: uuu * p0.y + 3 * uu * t * p1.y + 3 * u * tt * p2.y + ttt * p3.y
+            };
+
+            return p;
+        }
+
+        // Mouse movement demo
+        async function startMouseDemo() {
+            const cursor = document.getElementById('mouseCursor');
+            const browserContent = document.getElementById('browserContent');
+            const buttons = browserContent.querySelectorAll('.demo-button');
+
+            cursor.style.display = 'block';
+            addConsoleLog('🖱️ Starting natural mouse movement simulation', 'info');
+
+            for (let button of buttons) {
+                const rect = button.getBoundingClientRect();
+                const contentRect = browserContent.getBoundingClientRect();
+
+                const start = {
+                    x: cursor.offsetLeft || Math.random() * 200,
+                    y: cursor.offsetTop || Math.random() * 200
+                };
+
+                const end = {
+                    x: rect.left - contentRect.left + rect.width / 2,
+                    y: rect.top - contentRect.top + rect.height / 2
+                };
+
+                // Control points for bezier curve
+                const cp1 = {
+                    x: start.x + (end.x - start.x) * 0.25 + (Math.random() - 0.5) * 100,
+                    y: start.y + (end.y - start.y) * 0.25 + (Math.random() - 0.5) * 100
+                };
+
+                const cp2 = {
+                    x: start.x + (end.x - start.x) * 0.75 + (Math.random() - 0.5) * 100,
+                    y: start.y + (end.y - start.y) * 0.75 + (Math.random() - 0.5) * 100
+                };
+
+                // Animate along bezier curve
+                const steps = 50;
+                for (let i = 0; i <= steps; i++) {
+                    const t = i / steps;
+                    const pos = bezierCurve(t, start, cp1, cp2, end);
+
+                    cursor.style.left = pos.x + 'px';
+                    cursor.style.top = pos.y + 'px';
+
+                    // Leave trail
+                    if (i % 5 === 0) {
+                        const trail = document.createElement('div');
+                        trail.className = 'mouse-trail';
+                        trail.style.left = pos.x + 6 + 'px';
+                        trail.style.top = pos.y + 6 + 'px';
+                        browserContent.appendChild(trail);
+                        setTimeout(() => trail.remove(), 1000);
+                    }
+
+                    await new Promise(resolve => setTimeout(resolve, 20));
+                }
+
+                // Click animation
+                button.style.transform = 'scale(0.95)';
+                setTimeout(() => button.style.transform = 'scale(1)', 100);
+
+                addConsoleLog(`Clicked element: ${button.textContent}`, 'debug');
+
+                await new Promise(resolve => setTimeout(resolve, 1000 + Math.random() * 1000));
+            }
+
+            addConsoleLog('✓ Mouse movement simulation complete', 'info');
+        }
+
+        // Typing demo
+        async function startTypingDemo() {
+            const inputs = document.querySelectorAll('.demo-input');
+            const cursor = document.getElementById('mouseCursor');
+            cursor.style.display = 'none';
+
+            addConsoleLog('⌨️ Starting human-like typing simulation', 'info');
+
+            const texts = ['John Smith', 'john.smith@example.com'];
+
+            for (let i = 0; i < inputs.length; i++) {
+                const input = inputs[i];
+                const text = texts[i];
+
+                input.focus();
+                input.value = '';
+
+                addConsoleLog(`Typing into field: ${input.placeholder}`, 'debug');
+
+                for (let char of text) {
+                    input.value += char;
+                    input.classList.add('typing-animation');
+
+                    // Variable typing speed
+                    const baseDelay = 100 + Math.random() * 150;
+
+                    // Occasional pause (thinking)
+                    const thinkingPause = Math.random() < 0.1 ? 300 : 0;
+
+                    setTimeout(() => input.classList.remove('typing-animation'), 50);
+                    await new Promise(resolve => setTimeout(resolve, baseDelay + thinkingPause));
+                }
+
+                // Sometimes make a typo and correct it
+                if (Math.random() < 0.3) {
+                    await new Promise(resolve => setTimeout(resolve, 200));
+                    input.value += 'x';
+                    await new Promise(resolve => setTimeout(resolve, 400));
+                    input.value = input.value.slice(0, -1);
+                    addConsoleLog('Typo detected and corrected', 'debug');
+                }
+
+                await new Promise(resolve => setTimeout(resolve, 1000));
+            }
+
+            addConsoleLog('✓ Typing simulation complete', 'info');
+        }
+
+        // Scrolling demo
+        async function startScrollDemo() {
+            const browserContent = document.getElementById('browserContent');
+            const cursor = document.getElementById('mouseCursor');
+            cursor.style.display = 'none';
+
+            addConsoleLog('📜 Starting intelligent scrolling simulation', 'info');
+
+            // Add more content for scrolling
+            const extraContent = document.createElement('div');
+            extraContent.innerHTML = `
+                <div style="margin-top: 2rem; padding: 2rem; background: var(--dark-bg); border-radius: 8px;">
+                    <h4 style="margin-bottom: 1rem;">Additional Content for Scrolling Demo</h4>
+                    <p style="color: var(--text-secondary); line-height: 1.6;">
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor
+                        incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
+                        exercitation ullamco laboris.
+                    </p>
+                    <p style="color: var(--text-secondary); line-height: 1.6; margin-top: 1rem;">
+                        Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
+                        fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident.
+                    </p>
+                    <button class="demo-button" style="margin-top: 1rem;">Read More</button>
+                </div>
+            `;
+            browserContent.appendChild(extraContent);
+
+            // Simulate different scrolling patterns
+            const patterns = [
+                { name: 'Quick Scan', speed: 50, distance: 100 },
+                { name: 'Reading', speed: 200, distance: 50 },
+                { name: 'Searching', speed: 100, distance: 150 }
+            ];
+
+            for (let pattern of patterns) {
+                addConsoleLog(`Scrolling pattern: ${pattern.name}`, 'debug');
+
+                for (let i = 0; i < 3; i++) {
+                    browserContent.scrollTop += pattern.distance;
+                    await new Promise(resolve => setTimeout(resolve, pattern.speed));
+                }
+
+                // Scroll back up sometimes
+                if (Math.random() < 0.5) {
+                    await new Promise(resolve => setTimeout(resolve, 500));
+                    browserContent.scrollTop -= pattern.distance * 2;
+                    addConsoleLog('Scrolled back to review content', 'debug');
+                }
+
+                await new Promise(resolve => setTimeout(resolve, 1000));
+            }
+
+            // Clean up
+            browserContent.scrollTop = 0;
+            extraContent.remove();
+
+            addConsoleLog('✓ Scrolling simulation complete', 'info');
+        }
+
+        // Full demo
+        async function startFullDemo() {
+            addConsoleLog('🚀 Starting full automation demonstration', 'info');
+            addConsoleLog('Behavior pattern: EXPLORER', 'debug');
+            addConsoleLog('Anti-detection: ACTIVE', 'debug');
+
+            // Run all demos in sequence
+            await startMouseDemo();
+            await new Promise(resolve => setTimeout(resolve, 1000));
+
+            await startTypingDemo();
+            await new Promise(resolve => setTimeout(resolve, 1000));
+
+            await startScrollDemo();
+
+            addConsoleLog('✅ Full demonstration complete!', 'info');
+            addConsoleLog('Session fingerprint: ' + generateSessionId(), 'debug');
+        }
+
+        // Generate session ID
+        function generateSessionId() {
+            return 'sess_' + Math.random().toString(36).substr(2, 9);
+        }
+
+        // Smooth scroll to demo
+        function scrollToDemo() {
+            document.getElementById('demo').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Start demo on button click
+        function startDemo() {
+            scrollToDemo();
+            setTimeout(() => startFullDemo(), 500);
+        }
+
+        // Add floating particles effect
+        function createParticle() {
+            const particle = document.createElement('div');
+            particle.style.position = 'fixed';
+            particle.style.width = '2px';
+            particle.style.height = '2px';
+            particle.style.background = 'var(--primary-green)';
+            particle.style.borderRadius = '50%';
+            particle.style.pointerEvents = 'none';
+            particle.style.opacity = '0.3';
+            particle.style.left = Math.random() * window.innerWidth + 'px';
+            particle.style.top = window.innerHeight + 'px';
+            document.body.appendChild(particle);
+
+            const duration = 5000 + Math.random() * 5000;
+            const horizontalMovement = (Math.random() - 0.5) * 100;
+
+            particle.animate([
+                { transform: 'translate(0, 0) scale(1)', opacity: 0.3 },
+                { transform: `translate(${horizontalMovement}px, -${window.innerHeight + 100}px) scale(0)`, opacity: 0 }
+            ], {
+                duration: duration,
+                easing: 'ease-out'
+            }).onfinish = () => particle.remove();
+        }
+
+        // Create particles periodically
+        setInterval(createParticle, 2000);
+
+        // Interactive hover effects for feature cards
+        document.querySelectorAll('.feature-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-10px) rotateX(5deg)';
+            });
+
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) rotateX(0)';
+            });
+        });
+
+        // Add glow effect on mouse move
+        document.addEventListener('mousemove', (e) => {
+            const cards = document.querySelectorAll('.feature-card, .info-card');
+            cards.forEach(card => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+
+                if (x >= 0 && x <= rect.width && y >= 0 && y <= rect.height) {
+                    card.style.background = `radial-gradient(circle at ${x}px ${y}px, rgba(16, 185, 129, 0.1), var(--card-bg))`;
+                } else {
+                    card.style.background = '';
+                }
+            });
+        });
+
+        // Initialize console with system info
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                addConsoleLog('System initialized with advanced anti-detection', 'info');
+                addConsoleLog(`User Agent spoofed: ${navigator.userAgent.substring(0, 50)}...`, 'debug');
+                addConsoleLog('WebGL fingerprint: Protected', 'debug');
+                addConsoleLog('Canvas fingerprint: Randomized', 'debug');
+                addConsoleLog('Ready for automation demonstration', 'info');
+            }, 1000);
+        });
+
+        // Add keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            if (e.key === '1') startMouseDemo();
+            if (e.key === '2') startTypingDemo();
+            if (e.key === '3') startScrollDemo();
+            if (e.key === '4') startFullDemo();
+            if (e.key === 'Escape') {
+                const cursor = document.getElementById('mouseCursor');
+                cursor.style.display = 'none';
+            }
+        });
+
+        // Performance monitor visualization
+        let performanceData = [];
+        function updatePerformanceMonitor() {
+            const metric = {
+                timestamp: Date.now(),
+                memory: performance.memory ? performance.memory.usedJSHeapSize / 1048576 : 0,
+                fps: 60 // Simulated FPS
+            };
+            performanceData.push(metric);
+            if (performanceData.length > 100) performanceData.shift();
+        }
+
+        setInterval(updatePerformanceMonitor, 1000);
+
+        // Easter egg: Konami code
+        let konamiCode = [];
+        const konamiPattern = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'KeyB', 'KeyA'];
+
+        document.addEventListener('keydown', (e) => {
+            konamiCode.push(e.code);
+            konamiCode = konamiCode.slice(-10);
+
+            if (konamiCode.join(',') === konamiPattern.join(',')) {
+                document.body.style.animation = 'rainbow 3s linear infinite';
+                addConsoleLog('🎮 KONAMI CODE ACTIVATED! Matrix mode enabled!', 'info');
+                setTimeout(() => {
+                    document.body.style.animation = '';
+                }, 5000);
+            }
+        });
+
+        // Add scroll reveal animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observe all feature cards and info cards
+        document.querySelectorAll('.feature-card, .info-card, .ethics-card').forEach(card => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(30px)';
+            card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(card);
+        });
+
+        // Add typing effect to hero title
+        function typeWriter(element, text, speed = 100) {
+            let i = 0;
+            element.innerHTML = '';
+            function type() {
+                if (i < text.length) {
+                    element.innerHTML += text.charAt(i);
+                    i++;
+                    setTimeout(type, speed);
+                }
+            }
+            type();
+        }
+
+        // Initialize typing effect on load
+        setTimeout(() => {
+            const heroTitle = document.querySelector('.hero h1');
+            const originalText = heroTitle.innerHTML;
+            typeWriter(heroTitle, 'Web Automation\nDemonstration', 80);
+        }, 2000);
+
+        // Add interactive terminal commands
+        const terminalCommands = [
+            'Initializing stealth protocols...',
+            'Loading behavioral patterns...',
+            'Calibrating mouse movement algorithms...',
+            'Randomizing timing sequences...',
+            'System ready for demonstration'
+        ];
+
+        function simulateTerminalStartup() {
+            terminalCommands.forEach((command, index) => {
+                setTimeout(() => {
+                    addConsoleLog(command, index === terminalCommands.length - 1 ? 'info' : 'debug');
+                }, (index + 1) * 800);
+            });
+        }
+
+        // Run terminal startup after initial load
+        setTimeout(simulateTerminalStartup, 3000);
+
+        // Add smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Add mobile menu toggle (for future mobile optimization)
+        function toggleMobileMenu() {
+            const navLinks = document.querySelector('.nav-links');
+            navLinks.style.display = navLinks.style.display === 'flex' ? 'none' : 'flex';
+        }
+
+        // Add loading states for demo buttons
+        function setButtonLoading(button, isLoading) {
+            if (isLoading) {
+                button.innerHTML = `
+                    <div class="loading-dots">
+                        <div class="loading-dot"></div>
+                        <div class="loading-dot"></div>
+                        <div class="loading-dot"></div>
+                    </div>
+                `;
+                button.disabled = true;
+            } else {
+                button.disabled = false;
+                // Reset original text based on button
+                const buttonTexts = {
+                    0: 'Mouse Movement',
+                    1: 'Human Typing',
+                    2: 'Smart Scrolling',
+                    3: 'Full Demo'
+                };
+                const index = Array.from(button.parentNode.children).indexOf(button);
+                button.textContent = buttonTexts[index];
+            }
+        }
+
+        // Enhanced demo functions with loading states
+        const originalStartMouseDemo = startMouseDemo;
+        startMouseDemo = async function() {
+            const button = event.target;
+            setButtonLoading(button, true);
+            await originalStartMouseDemo();
+            setButtonLoading(button, false);
+        };
+
+        const originalStartTypingDemo = startTypingDemo;
+        startTypingDemo = async function() {
+            const button = event.target;
+            setButtonLoading(button, true);
+            await originalStartTypingDemo();
+            setButtonLoading(button, false);
+        };
+
+        const originalStartScrollDemo = startScrollDemo;
+        startScrollDemo = async function() {
+            const button = event.target;
+            setButtonLoading(button, true);
+            await originalStartScrollDemo();
+            setButtonLoading(button, false);
+        };
+
+        const originalStartFullDemo = startFullDemo;
+        startFullDemo = async function() {
+            const button = event.target;
+            setButtonLoading(button, true);
+            await originalStartFullDemo();
+            setButtonLoading(button, false);
+        };
+
+        // Add progress indicator for full demo
+        function updateProgress(current, total) {
+            const percentage = Math.round((current / total) * 100);
+            addConsoleLog(`Progress: ${percentage}% (${current}/${total})`, 'info');
+        }
+    </script>
+</body>
+</html>
